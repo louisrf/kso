@@ -42,6 +42,7 @@ jobs:
           du -shc /opt/*
           ls -l /mnt
           cat /mnt/DATALOSS_WARNING_README.txt
+          echo "TMPDIR" "$TMPDIR"
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -70,5 +71,6 @@ jobs:
 
       - name: Clean temp
         run: |
+          df -h
           du -sh /mnt/docker
           rm -rf /mnt/docker
