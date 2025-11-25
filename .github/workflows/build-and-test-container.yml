@@ -30,8 +30,9 @@ jobs:
 
       - name: Free disk space (specific to Ubuntu images)
         run: |
-          sudo rm -rf /usr/share/dotnet || true
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY" || true
+          rm -rf /usr/share/dotnet
+          echo "$AGENT_TOOLSDIRECTORY"
+          rm -rf "$AGENT_TOOLSDIRECTORY"
 
       - name: Check space
         run: df -h
@@ -40,7 +41,7 @@ jobs:
         run: |
           du -shc /opt/*
           ls -l /mnt
-          du -shc /mnt/*
+          cat /mnt/DATALOSS_WARNING_README.txt
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
