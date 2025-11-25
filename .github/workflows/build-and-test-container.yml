@@ -75,6 +75,8 @@ jobs:
           platforms: linux/amd64
           push: false
           tags: ${{ github.repository }}:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Clean temp
         run: |
