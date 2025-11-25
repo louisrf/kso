@@ -45,7 +45,7 @@ jobs:
           ls -l /mnt
           cat /mnt/DATALOSS_WARNING_README.txt
           echo "TMPDIR" "$TMPDIR"
-          mkdir -p "$TMPDIR"
+          sudo mkdir -p "$TMPDIR"
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
