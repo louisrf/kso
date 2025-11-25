@@ -6,6 +6,7 @@ FROM nvcr.io/nvidia/cuda:12.9.0-cudnn-devel-ubuntu24.04 as builder
 # So that we are not asked for user input during the build
 ARG DEBIAN_FRONTEND=noninteractive
 
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
