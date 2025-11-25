@@ -38,14 +38,14 @@ jobs:
           sudo apt-get clean
           dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
 
+      - name: Check space
+        run: df -h
+
       - name: Free disk space (specific to Ubuntu images)
         run: |
-          du -shc /usr/share/dotnet
-          du -shc "$AGENT_TOOLSDIRECTORY"
-          du -shc /usr/local/lib/android
-          rm -rf /usr/share/dotnet
-          rm -rf "$AGENT_TOOLSDIRECTORY"
-          rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo rm -rf /usr/local/lib/android
 
       - name: Check space
         run: df -h
