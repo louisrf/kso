@@ -31,58 +31,62 @@ jobs:
       - name: Check space
         run: df -h
 
-          #      - name: Free disk space (specific to Ubuntu images)
+      - name: Free disk space (specific to Ubuntu images)
+        run: |
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 500
+
+      - name: Free disk space (specific to Ubuntu images)
+        run: |
+          du -shc /usr/share/dotnet
+          du -shc "$AGENT_TOOLSDIRECTORY"
+          du -shc /usr/local/lib/android
+
+      - name: Check space
+        run: df -h
+          #
+          #      - name: TEST
           #        run: |
-          #          rm -rf /usr/share/dotnet
-          #          echo "$AGENT_TOOLSDIRECTORY"
-          #          rm -rf "$AGENT_TOOLSDIRECTORY"
-
-          #      - name: Check space
-          #        run: df -h
-
-      - name: TEST
-        run: |
-          du -shc /opt/*
-          ls -l /mnt
-          cat /mnt/DATALOSS_WARNING_README.txt
-          echo "TMPDIR" "$TMPDIR"
-          sudo mkdir -p "$TMPDIR"
-          sudo chown runner:runner "$TMPDIR"
-          id
-          ls -l /mnt
-          ls "$TMPDIR"
-          echo "$RUNNER_TEMP"
-          echo "runner"; du -shc /home/runner/work/_temp/
-          echo "docker"; sudo du -shc /var/lib/docker/
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: '${{ github.actor }}'
-          password: '${{ secrets.GITHUB_TOKEN }}'
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          file: Dockerfile
-          platforms: linux/amd64
-          push: false
-          tags: ${{ github.repository }}:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Clean temp
-        run: |
-          df -h
-          echo "runner"; du -shc /home/runner/work/_temp/
-          echo "docker"; sudo du -shc /var/lib/docker/
-          echo "mnt"; du -shc /mnt/docker/
-          ls -l /mnt/docker
-          sudo rm -rf /mnt/docker
+          #          du -shc /opt/*
+          #          ls -l /mnt
+          #          cat /mnt/DATALOSS_WARNING_README.txt
+          #          echo "TMPDIR" "$TMPDIR"
+          #          sudo mkdir -p "$TMPDIR"
+          #          sudo chown runner:runner "$TMPDIR"
+          #          id
+          #          ls -l /mnt
+          #          ls "$TMPDIR"
+          #          echo "$RUNNER_TEMP"
+          #          echo "runner"; du -shc /home/runner/work/_temp/
+          #          echo "docker"; sudo du -shc /var/lib/docker/
+          #
+          #      - name: Log in to the Container registry
+          #        uses: docker/login-action@v3
+          #        with:
+          #          registry: ghcr.io
+          #          username: '${{ github.actor }}'
+          #          password: '${{ secrets.GITHUB_TOKEN }}'
+          #
+          #      - name: Set up QEMU
+          #        uses: docker/setup-qemu-action@v3
+          #
+          #      - name: Set up Docker Buildx
+          #        uses: docker/setup-buildx-action@v3
+          #
+          #      - name: Build and push
+          #        uses: docker/build-push-action@v6
+          #        with:
+          #          file: Dockerfile
+          #          platforms: linux/amd64
+          #          push: false
+          #          tags: ${{ github.repository }}:test
+          #          cache-from: type=gha
+          #          cache-to: type=gha,mode=max
+          #
+          #      - name: Clean temp
+          #        run: |
+          #          df -h
+          #          echo "runner"; du -shc /home/runner/work/_temp/
+          #          echo "docker"; sudo du -shc /var/lib/docker/
+          #          echo "mnt"; du -shc /mnt/docker/
+          #          ls -l /mnt/docker
+          #          sudo rm -rf /mnt/docker
