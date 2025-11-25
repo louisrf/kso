@@ -2,60 +2,60 @@
 # We need ffmpeg on the system that works with the GPU.
 # Only having the python package is not enough. ---
 # To build from source we need the devel cuda image.
-FROM nvcr.io/nvidia/cuda:12.9.0-cudnn-devel-ubuntu24.04 as builder
-# So that we are not asked for user input during the build
-ARG DEBIAN_FRONTEND=noninteractive
-
-
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install --no-install-recommends -y \
-        automake \
-        autoconf \
-        build-essential \
-        git \
-        libc6-dev \
-        libssl-dev \
-        libtool \
-        # The next package is needed to support -libx246 for ffmpeg
-        libx264-dev \
-        libxcb1-dev \
-        libxau-dev \
-        libxdmcp-dev \
-        pkg-config \
-        yasm \
-        nasm && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# --- Build ffmpeg with CUDA support from source ---
-RUN git clone --depth 1 --branch n12.0.16.0 https://github.com/FFmpeg/nv-codec-headers.git && \
-    cd nv-codec-headers && \
-    make install && \
-    cd .. && \
-    git clone https://git.ffmpeg.org/ffmpeg.git --depth 1 ffmpeg/ && \
-    cd ffmpeg && \
-    ./configure \
-        --enable-nonfree \
-        --enable-cuda-nvcc \
-        --enable-libnpp \
-        --enable-openssl \
-        --disable-doc \
-        --disable-ffplay \
-        # The libx246 encoder is used in the project, therefore we need to enable libx246 and gpl
-        --enable-libx264 \
-        --enable-gpl \
-        --extra-cflags=-I/usr/local/cuda/include \
-        --extra-ldflags=-L/usr/local/cuda/lib64 && \
-    make -j 8 && \
-    make install && \
-    make clean
+#FROM nvcr.io/nvidia/cuda:12.9.0-cudnn-devel-ubuntu24.04 as builder
+## So that we are not asked for user input during the build
+#ARG DEBIAN_FRONTEND=noninteractive
+#
+#
+#RUN apt-get update && \
+#    apt-get upgrade -y && \
+#    apt-get install --no-install-recommends -y \
+#        automake \
+#        autoconf \
+#        build-essential \
+#        git \
+#        libc6-dev \
+#        libssl-dev \
+#        libtool \
+#        # The next package is needed to support -libx246 for ffmpeg
+#        libx264-dev \
+#        libxcb1-dev \
+#        libxau-dev \
+#        libxdmcp-dev \
+#        pkg-config \
+#        yasm \
+#        nasm && \
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
+#
+## --- Build ffmpeg with CUDA support from source ---
+#RUN git clone --depth 1 --branch n12.0.16.0 https://github.com/FFmpeg/nv-codec-headers.git && \
+#    cd nv-codec-headers && \
+#    make install && \
+#    cd .. && \
+#    git clone https://git.ffmpeg.org/ffmpeg.git --depth 1 ffmpeg/ && \
+#    cd ffmpeg && \
+#    ./configure \
+#        --enable-nonfree \
+#        --enable-cuda-nvcc \
+#        --enable-libnpp \
+#        --enable-openssl \
+#        --disable-doc \
+#        --disable-ffplay \
+#        # The libx246 encoder is used in the project, therefore we need to enable libx246 and gpl
+#        --enable-libx264 \
+#        --enable-gpl \
+#        --extra-cflags=-I/usr/local/cuda/include \
+#        --extra-ldflags=-L/usr/local/cuda/lib64 && \
+#    make -j 8 && \
+#    make install && \
+#    make clean
 
 # Start over from the docker image with cuda 12.0
 # since we only want the final result from the previous run and we copy that.
 # Now we can use the runtime cuda image, since we do not need to build anything
 # from scratch. This is better, since the runtime image is smaller
 FROM nvcr.io/nvidia/cuda:12.9.0-cudnn-runtime-ubuntu24.04
-COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+#COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 # So that we are not asked for user input during the build
 ARG DEBIAN_FRONTEND=noninteractive
 
