@@ -33,7 +33,10 @@ jobs:
 
       - name: Free disk space (specific to Ubuntu images)
         run: |
-          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 500
+          sudo apt-get remove --purge -y microsoft-edge-stable google-chrome-stable firefox azure-cli '^google-cloud-*' powershell '^temurin-[0-9]+-jdk$' '^llvm-*'
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
 
       - name: Free disk space (specific to Ubuntu images)
         run: |
