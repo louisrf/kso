@@ -21,6 +21,8 @@ on:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    env:
+      TMPDIR: /mnt/docker
     permissions:
       contents: read
       packages: write
@@ -59,8 +61,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
-        env:
-          TMPDIR: /mnt/docker
         with:
           file: Dockerfile
           platforms: linux/amd64
