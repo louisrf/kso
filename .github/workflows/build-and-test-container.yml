@@ -53,7 +53,7 @@ jobs:
           ls "$TMPDIR"
           echo "$RUNNER_TEMP"
           echo "runner"; du -shc /home/runner/work/_temp/
-          echo "docker"; du -shc /var/lib/docker/
+          echo "docker"; sudo du -shc /var/lib/docker/
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -80,7 +80,7 @@ jobs:
         run: |
           df -h
           echo "runner"; du -shc /home/runner/work/_temp/
-          echo "docker"; du -shc /var/lib/docker/
+          echo "docker"; sudo du -shc /var/lib/docker/
           echo "mnt"; du -shc /mnt/docker/
           ls -l /mnt/docker
           sudo rm -rf /mnt/docker
