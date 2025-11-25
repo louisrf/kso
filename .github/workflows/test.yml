@@ -1,0 +1,49 @@
+name: test
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [build-and-push-image, configure, check-image]
+    container:
+      image: ghcr.io/${{ github.repository }}:${{ needs.check-image.outputs.tag }}
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      credentials:
+        username: '${{ github.actor }}'
+        password: '${{ secrets.GITHUB_TOKEN }}'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Pylint kso_utils
+        shell: bash
+        run: |
+          pylint kso_utils
+      - name: Pylint notebooks
+        if: success() || failure()
+        shell: bash
+        run: |
+          nbqa pylint notebooks
+        # If one of the pylint steps fails, there are errors and we do not need to run the test below.
+      - name: Pytest
+        shell: bash
+        run: |
+          export PYTHONPATH=.
+          pytest -vv .
+        env:
+          WANDB_API_KEY: '${{ secrets.WANDB_API_KEY }}'
