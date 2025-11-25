@@ -30,14 +30,14 @@ jobs:
       - name: Check space
         run: df -h
 
-      - name: Free disk space (specific to Ubuntu images)
-        run: |
-          rm -rf /usr/share/dotnet
-          echo "$AGENT_TOOLSDIRECTORY"
-          rm -rf "$AGENT_TOOLSDIRECTORY"
+          #      - name: Free disk space (specific to Ubuntu images)
+          #        run: |
+          #          rm -rf /usr/share/dotnet
+          #          echo "$AGENT_TOOLSDIRECTORY"
+          #          rm -rf "$AGENT_TOOLSDIRECTORY"
 
-      - name: Check space
-        run: df -h
+          #      - name: Check space
+          #        run: df -h
 
       - name: TEST
         run: |
@@ -50,6 +50,8 @@ jobs:
           id
           ls -l /mnt
           ls "$TMPDIR"
+          echo "$RUNNER_TEMP"
+          du -shc /home/runner/work/_temp/
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -75,5 +77,6 @@ jobs:
       - name: Clean temp
         run: |
           df -h
-          du -sh /mnt/docker
-          rm -rf /mnt/docker
+          du -shc /home/runner/work/_temp/
+          du -shc /mnt/docker
+          sudo rm -rf /mnt/docker
