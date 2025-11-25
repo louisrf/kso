@@ -46,6 +46,7 @@ jobs:
           cat /mnt/DATALOSS_WARNING_README.txt
           echo "TMPDIR" "$TMPDIR"
           sudo mkdir -p "$TMPDIR"
+          sudo chown runner:runner "$TMPDIR"
           id
           ls -l /mnt
           ls "$TMPDIR"
