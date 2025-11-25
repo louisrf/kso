@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TMPDIR: /mnt/docker
+      DOCKER_BUILDKIT: 1
     permissions:
       contents: read
       packages: write
