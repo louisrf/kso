@@ -33,7 +33,7 @@ jobs:
 
       - name: Free disk space (specific to Ubuntu images)
         run: |
-          sudo apt-get remove --purge -y microsoft-edge-stable google-chrome-stable firefox azure-cli '^google-cloud-*' powershell temurin-{8,11,17,25}-jdk '^llvm-*'
+          sudo apt-get remove --purge -y microsoft-edge-stable google-chrome-stable firefox azure-cli '^google-cloud-*' powershell temurin-{8,11,17,25}-jdk '^llvm-*' '^libllvm-*' '^mysql-*' gcc-{9,10,11,12,13} '^gfortran-*'
           sudo apt-get autoremove -y
           sudo apt-get clean
           dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
