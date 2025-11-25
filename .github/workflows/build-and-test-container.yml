@@ -39,8 +39,8 @@ jobs:
       - name: TEST
         run: |
           du -shc /opt/*
-          ls -l /tmp
-          du -shc /tmp/*
+          ls -l /mnt
+          du -shc /mnt/*
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -58,7 +58,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         env:
-          TMPDIR: /tmp/docker
+          TMPDIR: /mnt/docker
         with:
           file: Dockerfile
           platforms: linux/amd64
