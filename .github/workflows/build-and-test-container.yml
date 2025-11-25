@@ -67,3 +67,8 @@ jobs:
           tags: ${{ github.repository }}:test
           cache-from: type=registry,ref=${{ github.repository }}:buildcache
           cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
+
+      - name: Clean temp
+        run: |
+          du -sh /mnt/docker
+          rm -rf /mnt/docker
